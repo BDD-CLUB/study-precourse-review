@@ -2,8 +2,16 @@ package racingcar.model.car;
 
 import racingcar.model.RandomNumberGenerator;
 
-public record Car(Name name, Position position) implements Comparable<Car> {
+public class Car implements Comparable<Car> {
     private static final int FORWARD_NUMBER = 4;
+
+    private final Name name;
+    private final Position position;
+
+    public Car(Name name, Position position) {
+        this.name = name;
+        this.position = position;
+    }
 
     public void race() {
         int number = RandomNumberGenerator.generate();
@@ -21,12 +29,16 @@ public record Car(Name name, Position position) implements Comparable<Car> {
         return getPosition() - other.getPosition();
     }
 
+    public Name getName() {
+        return name;
+    }
+
     private int getPosition() {
         return this.position.get();
     }
 
     @Override
     public String toString() {
-        return this.name + " : " + "-".repeat(getPosition());
+        return this.name + " : " + "-".repeat(getPosition()) + "\n";
     }
 }

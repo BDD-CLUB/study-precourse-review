@@ -1,7 +1,6 @@
 package racingcar.model;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -43,7 +42,7 @@ public class Cars {
 
     private static void validateDuplicate(List<Car> cars) {
         List<Name> carNames = cars.stream()
-                .map(Car::name)
+                .map(Car::getName)
                 .toList();
         Set<Name> nonDuplicateCarNames = new HashSet<>(carNames);
         if (nonDuplicateCarNames.size() != carNames.size()) {
@@ -71,12 +70,17 @@ public class Cars {
     private List<String> getMaxPositionCarNames(Car maxPositionCar) {
         return cars.stream()
                 .filter(maxPositionCar::isSamePosition)
-                .map(Car::name)
+                .map(Car::getName)
                 .map(Name::name)
                 .toList();
     }
 
-    public List<Car> getCars() {
-        return Collections.unmodifiableList(cars);
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (Car car : cars) {
+            sb.append(car.toString());
+        }
+        return sb.toString();
     }
 }
