@@ -2,10 +2,10 @@ package lotto.controller;
 
 import static lotto.model.Lotto.generateLotto;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 import lotto.dto.LottosResult;
-import lotto.dto.Results;
+import lotto.dto.TotalResults;
 import lotto.generator.NumberGenerator;
 import lotto.model.Lotto;
 import lotto.model.Lottos;
@@ -15,6 +15,8 @@ import lotto.view.InputView;
 import lotto.view.OutputView;
 
 public class LottoController {
+    private static final int DIVIDE_NUMBER = 1000;
+
     private final InputView inputView;
     private final OutputView outputView;
     private final NumberGenerator numberGenerator;
@@ -34,18 +36,17 @@ public class LottoController {
 
         User user = createUser();
         WinningLottos winningLottos = new WinningLottos(lottos.getWinningLottos(user));
-        outputView.printResults(Results.of(winningLottos, getRateOfReturn(amounts, winningLottos)));
+        outputView.printResults(TotalResults.of(winningLottos, getRateOfReturn(amounts, winningLottos)));
     }
 
     private int getLottoCount(int amounts) {
-        return amounts / 1000;
+        return amounts / DIVIDE_NUMBER;
     }
 
     private Lottos generateLottos(int lottoCount) {
-        List<Lotto> lottos = new ArrayList<>();
-        for (int i = 0; i < lottoCount; i++) {
-            lottos.add(generateLotto(numberGenerator));
-        }
+        List<Lotto> lottos = IntStream.range(0, lottoCount)
+                .mapToObj(i -> generateLotto(numberGenerator))
+                .toList();
         return new Lottos(lottos);
     }
 
