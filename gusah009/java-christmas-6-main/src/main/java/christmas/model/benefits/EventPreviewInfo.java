@@ -23,8 +23,10 @@ public class EventPreviewInfo {
     private final Map<String, Integer> benefitsInfo;
     private final int totalDiscountPrice;
     private final int totalBenefitPrice;
+    private final Optional<Badge> eventBadge;
 
-    private EventPreviewInfo(Order order, int totalPriceBeforeDiscount, Optional<FreeGift> freeGift, Map<String, Integer> discountInfo, Map<String, Integer> benefitsInfo, int totalDiscountPrice, int totalBenefitPrice) {
+    private EventPreviewInfo(Order order, int totalPriceBeforeDiscount, Optional<FreeGift> freeGift,
+                             Map<String, Integer> discountInfo, Map<String, Integer> benefitsInfo, int totalDiscountPrice, int totalBenefitPrice, Optional<Badge> eventBadge) {
         this.order = order;
         this.totalPriceBeforeDiscount = totalPriceBeforeDiscount;
         this.freeGift = freeGift;
@@ -32,20 +34,22 @@ public class EventPreviewInfo {
         this.benefitsInfo = benefitsInfo;
         this.totalDiscountPrice = totalDiscountPrice;
         this.totalBenefitPrice = totalBenefitPrice;
+        this.eventBadge = eventBadge;
     }
 
     public static EventPreviewInfo from(Order order, VisitDay visitDay) {
         int totalPriceBeforeDiscount = order.getTotalPrice();
         if (totalPriceBeforeDiscount < POSSIBLE_EVENT_PRICE) {
             return new EventPreviewInfo(order, totalPriceBeforeDiscount, Optional.empty(),
-                    Map.of(), Map.of(), 0, 0);
+                    Map.of(), Map.of(), 0, 0, Optional.empty());
         }
         Optional<FreeGift> freeGift = FreeGift.from(totalPriceBeforeDiscount);
         Map<String, Integer> discountInfo = getDiscountInfo(order, visitDay);
         Map<String, Integer> benefitsInfo = freeGift.map(gift -> getBenefitsInfo(discountInfo, gift))
                 .orElse(new HashMap<>(discountInfo));
+        Optional<Badge> eventBadge = Badge.from(getTotalPrice(benefitsInfo));
         return new EventPreviewInfo(order, totalPriceBeforeDiscount, freeGift,
-                unmodifiableMap(discountInfo), unmodifiableMap(benefitsInfo), getTotalPrice(discountInfo), getTotalPrice(benefitsInfo));
+                unmodifiableMap(discountInfo), unmodifiableMap(benefitsInfo), getTotalPrice(discountInfo), getTotalPrice(benefitsInfo), eventBadge);
     }
 
     private static Map<String, Integer> getDiscountInfo(Order order, VisitDay visitDay) {
@@ -92,5 +96,9 @@ public class EventPreviewInfo {
 
     public String getExpectedPrice() {
         return NumberFormat.getInstance().format(this.totalPriceBeforeDiscount - this.totalDiscountPrice) + "원";
+    }
+
+    public String getEventBadge() {
+        return eventBadge.map(Badge::name).orElse("없음");
     }
 }

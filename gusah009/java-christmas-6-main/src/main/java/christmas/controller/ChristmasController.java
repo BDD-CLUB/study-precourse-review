@@ -29,5 +29,6 @@ public class ChristmasController {
         outputView.printBenefitInfos(eventPreviewInfo);
         outputView.printTotalBenefitPrice(eventPreviewInfo);
         outputView.printExpectedPrice(eventPreviewInfo);
+        outputView.printEventBadge(eventPreviewInfo);
     }
 }

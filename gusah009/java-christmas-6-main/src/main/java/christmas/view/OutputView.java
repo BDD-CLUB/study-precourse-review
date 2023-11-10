@@ -45,4 +45,10 @@ public class OutputView {
         System.out.println(eventPreviewInfo.getExpectedPrice());
         System.out.println();
     }
+
+    public void printEventBadge(EventPreviewInfo eventPreviewInfo) {
+        System.out.println("<12월 이벤트 배지>");
+        System.out.println(eventPreviewInfo.getEventBadge());
+        System.out.println();
+    }
 }
