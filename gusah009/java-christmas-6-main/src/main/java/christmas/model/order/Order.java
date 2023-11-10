@@ -108,5 +108,10 @@ public class Order {
             }
             return new MenuCount(count);
         }
+
+        @Override
+        public String toString() {
+            return String.valueOf(this.count);
+        }
     }
 }

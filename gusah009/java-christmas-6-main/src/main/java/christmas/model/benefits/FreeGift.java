@@ -16,7 +16,7 @@ public class FreeGift {
     }
 
     public static Optional<FreeGift> from(int totalPriceBeforeDiscount) {
-        if (totalPriceBeforeDiscount >= POSSIBLE_GET_GIFT_PRICE) {
+        if (totalPriceBeforeDiscount < POSSIBLE_GET_GIFT_PRICE) {
             return Optional.empty();
         }
         return Optional.of(new FreeGift(Drink.샴페인));
