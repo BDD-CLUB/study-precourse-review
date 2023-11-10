@@ -16,37 +16,46 @@ public class OutputView {
         System.out.println();
     }
 
-    public void printPriceBeforeDiscount(EventPreviewInfo eventPreviewInfo) {
+    public void printEventPreviewInfo(EventPreviewInfo eventPreviewInfo) {
+        this.printPriceBeforeDiscount(eventPreviewInfo);
+        this.printFreeGift(eventPreviewInfo);
+        this.printBenefitInfos(eventPreviewInfo);
+        this.printTotalBenefitPrice(eventPreviewInfo);
+        this.printExpectedPrice(eventPreviewInfo);
+        this.printEventBadge(eventPreviewInfo);
+    }
+
+    private void printPriceBeforeDiscount(EventPreviewInfo eventPreviewInfo) {
         System.out.println("<할인 전 총주문 금액>");
         System.out.println(eventPreviewInfo.getTotalPriceBeforeDiscount() + "원");
         System.out.println();
     }
 
-    public void printFreeGift(EventPreviewInfo eventPreviewInfo) {
+    private void printFreeGift(EventPreviewInfo eventPreviewInfo) {
         System.out.println("<증정 메뉴>");
         System.out.println(eventPreviewInfo.getFreeGift());
         System.out.println();
     }
 
-    public void printBenefitInfos(EventPreviewInfo eventPreviewInfo) {
+    private void printBenefitInfos(EventPreviewInfo eventPreviewInfo) {
         System.out.println("<혜택 내역>");
         System.out.println(eventPreviewInfo.getBenefitInfo());
         System.out.println();
     }
 
-    public void printTotalBenefitPrice(EventPreviewInfo eventPreviewInfo) {
+    private void printTotalBenefitPrice(EventPreviewInfo eventPreviewInfo) {
         System.out.println("<총혜택 금액>");
         System.out.println(eventPreviewInfo.getTotalBenefitPriceToString());
         System.out.println();
     }
 
-    public void printExpectedPrice(EventPreviewInfo eventPreviewInfo) {
+    private void printExpectedPrice(EventPreviewInfo eventPreviewInfo) {
         System.out.println("<할인 후 예상 결제 금액>");
         System.out.println(eventPreviewInfo.getExpectedPrice());
         System.out.println();
     }
 
-    public void printEventBadge(EventPreviewInfo eventPreviewInfo) {
+    private void printEventBadge(EventPreviewInfo eventPreviewInfo) {
         System.out.println("<12월 이벤트 배지>");
         System.out.println(eventPreviewInfo.getEventBadge());
         System.out.println();

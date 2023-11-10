@@ -24,11 +24,6 @@ public class ChristmasController {
 
         outputView.printGuideMessage(visitDay);
         outputView.printMenu(order);
-        outputView.printPriceBeforeDiscount(eventPreviewInfo);
-        outputView.printFreeGift(eventPreviewInfo);
-        outputView.printBenefitInfos(eventPreviewInfo);
-        outputView.printTotalBenefitPrice(eventPreviewInfo);
-        outputView.printExpectedPrice(eventPreviewInfo);
-        outputView.printEventBadge(eventPreviewInfo);
+        outputView.printEventPreviewInfo(eventPreviewInfo);
     }
 }

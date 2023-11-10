@@ -1,6 +1,7 @@
 package christmas.view;
 
 import camp.nextstep.edu.missionutils.Console;
+import christmas.exception.ChristmasException;
 import christmas.model.VisitDay;
 import christmas.model.order.Order;
 
@@ -14,7 +15,7 @@ public class InputView {
         do {
             try {
                 return VisitDay.from(Console.readLine());
-            } catch (Exception e) {
+            } catch (ChristmasException e) {
                 System.out.println(e.getMessage());
             }
         } while (true);
@@ -25,7 +26,7 @@ public class InputView {
         do {
             try {
                 return Order.from(Console.readLine());
-            } catch (Exception e) {
+            } catch (ChristmasException e) {
                 System.out.println(e.getMessage());
             }
         } while (true);

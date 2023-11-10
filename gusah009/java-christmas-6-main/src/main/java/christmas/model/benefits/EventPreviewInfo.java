@@ -1,6 +1,5 @@
 package christmas.model.benefits;
 
-import christmas.entity.discount.DiscountPolicy;
 import christmas.model.VisitDay;
 import christmas.model.order.Order;
 
@@ -10,27 +9,24 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static christmas.entity.discount.DiscountPolicy.getDiscountInfo;
 import static java.util.Collections.unmodifiableMap;
 
 public class EventPreviewInfo {
 
     private static final int POSSIBLE_EVENT_PRICE = 10_000;
 
-    private final Order order;
     private final int totalPriceBeforeDiscount;
     private final Optional<FreeGift> freeGift;
-    private final Map<String, Integer> discountInfo;
     private final Map<String, Integer> benefitsInfo;
     private final int totalDiscountPrice;
     private final int totalBenefitPrice;
     private final Optional<Badge> eventBadge;
 
-    private EventPreviewInfo(Order order, int totalPriceBeforeDiscount, Optional<FreeGift> freeGift,
-                             Map<String, Integer> discountInfo, Map<String, Integer> benefitsInfo, int totalDiscountPrice, int totalBenefitPrice, Optional<Badge> eventBadge) {
-        this.order = order;
+    private EventPreviewInfo(int totalPriceBeforeDiscount, Optional<FreeGift> freeGift, Map<String, Integer> benefitsInfo,
+                             int totalDiscountPrice, int totalBenefitPrice, Optional<Badge> eventBadge) {
         this.totalPriceBeforeDiscount = totalPriceBeforeDiscount;
         this.freeGift = freeGift;
-        this.discountInfo = discountInfo;
         this.benefitsInfo = benefitsInfo;
         this.totalDiscountPrice = totalDiscountPrice;
         this.totalBenefitPrice = totalBenefitPrice;
@@ -40,25 +36,16 @@ public class EventPreviewInfo {
     public static EventPreviewInfo from(Order order, VisitDay visitDay) {
         int totalPriceBeforeDiscount = order.getTotalPrice();
         if (totalPriceBeforeDiscount < POSSIBLE_EVENT_PRICE) {
-            return new EventPreviewInfo(order, totalPriceBeforeDiscount, Optional.empty(),
-                    Map.of(), Map.of(), 0, 0, Optional.empty());
+            return new EventPreviewInfo(totalPriceBeforeDiscount, Optional.empty(),
+                    Map.of(), 0, 0, Optional.empty());
         }
         Optional<FreeGift> freeGift = FreeGift.from(totalPriceBeforeDiscount);
         Map<String, Integer> discountInfo = getDiscountInfo(order, visitDay);
         Map<String, Integer> benefitsInfo = freeGift.map(gift -> getBenefitsInfo(discountInfo, gift))
                 .orElse(new HashMap<>(discountInfo));
         Optional<Badge> eventBadge = Badge.from(getTotalPrice(benefitsInfo));
-        return new EventPreviewInfo(order, totalPriceBeforeDiscount, freeGift,
-                unmodifiableMap(discountInfo), unmodifiableMap(benefitsInfo), getTotalPrice(discountInfo), getTotalPrice(benefitsInfo), eventBadge);
-    }
-
-    private static Map<String, Integer> getDiscountInfo(Order order, VisitDay visitDay) {
-        Map<String, Integer> discountInfo = new HashMap<>();
-        for (DiscountPolicy discountPolicy : DiscountPolicy.values()) {
-            discountPolicy.getDiscountPriceIfDiscountable(order, visitDay)
-                    .ifPresent(discountPrice -> discountInfo.put(discountPolicy.toString(), discountPrice));
-        }
-        return discountInfo;
+        return new EventPreviewInfo(totalPriceBeforeDiscount, freeGift,
+                unmodifiableMap(benefitsInfo), getTotalPrice(discountInfo), getTotalPrice(benefitsInfo), eventBadge);
     }
 
     private static Map<String, Integer> getBenefitsInfo(Map<String, Integer> discountInfo, FreeGift freeGift) {

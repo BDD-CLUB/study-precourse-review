@@ -8,6 +8,8 @@ import org.assertj.core.util.VisibleForTesting;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -142,5 +144,14 @@ public enum DiscountPolicy {
             return true;
         }
         return false;
+    }
+
+    public static Map<String, Integer> getDiscountInfo(Order order, VisitDay visitDay) {
+        Map<String, Integer> discountInfo = new HashMap<>();
+        for (DiscountPolicy discountPolicy : DiscountPolicy.values()) {
+            discountPolicy.getDiscountPriceIfDiscountable(order, visitDay)
+                    .ifPresent(discountPrice -> discountInfo.put(discountPolicy.toString(), discountPrice));
+        }
+        return discountInfo;
     }
 }
