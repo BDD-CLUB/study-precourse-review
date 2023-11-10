@@ -1,7 +1,7 @@
 package christmas.controller;
 
 import christmas.model.VisitDay;
-import christmas.model.benefits.BenefitsInfo;
+import christmas.model.benefits.EventPreviewInfo;
 import christmas.model.order.Order;
 import christmas.view.InputView;
 import christmas.view.OutputView;
@@ -20,11 +20,14 @@ public class ChristmasController {
         inputView.printIntroduce();
         VisitDay visitDay = inputView.readVisitDay();
         Order order = inputView.readOrder();
-        BenefitsInfo benefitsInfo = BenefitsInfo.from(order);
+        EventPreviewInfo eventPreviewInfo = EventPreviewInfo.from(order, visitDay);
 
         outputView.printGuideMessage(visitDay);
         outputView.printMenu(order);
-        outputView.printPriceBeforeDiscount(benefitsInfo);
-        outputView.printFreeGift(benefitsInfo);
+        outputView.printPriceBeforeDiscount(eventPreviewInfo);
+        outputView.printFreeGift(eventPreviewInfo);
+        outputView.printBenefitInfos(eventPreviewInfo);
+        outputView.printTotalBenefitPrice(eventPreviewInfo);
+        outputView.printExpectedPrice(eventPreviewInfo);
     }
 }

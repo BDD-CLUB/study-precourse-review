@@ -1,5 +1,6 @@
 package christmas.model.order;
 
+import christmas.entity.menu.Main;
 import christmas.entity.menu.Menu;
 import christmas.exception.ChristmasException;
 import org.junit.jupiter.api.Test;
@@ -63,5 +64,15 @@ class OrderTest {
                 Menu.from("레드와인"), Order.MenuCount.from("1"),
                 Menu.from("초코케이크"), Order.MenuCount.from("1")));
         assertThat(order.getTotalPrice()).isEqualTo(70000 + 60000 + 15000); // 145000
+    }
+
+    @Test
+    void should_getMenuCountCorrectly() {
+        Order order = new Order(Map.of(
+                Menu.from("해산물파스타"), Order.MenuCount.from("1"), // Main
+                Menu.from("티본스테이크"), Order.MenuCount.from("1"), // Main
+                Menu.from("바비큐립"), Order.MenuCount.from("1"),    // Main
+                Menu.from("초코케이크"), Order.MenuCount.from("1"))); // Dessert
+        assertThat(order.getMenuCount(Main.class)).isEqualTo(3);
     }
 }

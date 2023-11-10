@@ -1,7 +1,7 @@
 package christmas.view;
 
 import christmas.model.VisitDay;
-import christmas.model.benefits.BenefitsInfo;
+import christmas.model.benefits.EventPreviewInfo;
 import christmas.model.order.Order;
 
 public class OutputView {
@@ -16,15 +16,33 @@ public class OutputView {
         System.out.println();
     }
 
-    public void printPriceBeforeDiscount(BenefitsInfo benefitsInfo) {
+    public void printPriceBeforeDiscount(EventPreviewInfo eventPreviewInfo) {
         System.out.println("<할인 전 총주문 금액>");
-        System.out.println(benefitsInfo.getTotalPriceBeforeDiscount() + "원");
+        System.out.println(eventPreviewInfo.getTotalPriceBeforeDiscount() + "원");
         System.out.println();
     }
 
-    public void printFreeGift(BenefitsInfo benefitsInfo) {
+    public void printFreeGift(EventPreviewInfo eventPreviewInfo) {
         System.out.println("<증정 메뉴>");
-        System.out.println(benefitsInfo.getFreeGift());
+        System.out.println(eventPreviewInfo.getFreeGift());
+        System.out.println();
+    }
+
+    public void printBenefitInfos(EventPreviewInfo eventPreviewInfo) {
+        System.out.println("<혜택 내역>");
+        System.out.println(eventPreviewInfo.getBenefitInfo());
+        System.out.println();
+    }
+
+    public void printTotalBenefitPrice(EventPreviewInfo eventPreviewInfo) {
+        System.out.println("<총혜택 금액>");
+        System.out.println(eventPreviewInfo.getTotalBenefitPriceToString());
+        System.out.println();
+    }
+
+    public void printExpectedPrice(EventPreviewInfo eventPreviewInfo) {
+        System.out.println("<할인 후 예상 결제 금액>");
+        System.out.println(eventPreviewInfo.getExpectedPrice());
         System.out.println();
     }
 }

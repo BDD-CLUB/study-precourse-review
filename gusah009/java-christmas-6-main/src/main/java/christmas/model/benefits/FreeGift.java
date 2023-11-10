@@ -24,6 +24,14 @@ public class FreeGift {
 
     @Override
     public String toString() {
+        return "증정 이벤트";
+    }
+
+    public int getTotalPrice() {
+        return freeGift.getPrice();
+    }
+
+    public String getFreeGiftInfo() {
         return freeGift.getMenuName() + " 1개";
     }
 }

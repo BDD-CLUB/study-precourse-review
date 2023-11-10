@@ -27,6 +27,10 @@ public class VisitDay {
         }
     }
 
+    public int getDay() {
+        return day;
+    }
+
     @Override
     public String toString() {
         return String.valueOf(this.day);

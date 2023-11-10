@@ -93,6 +93,13 @@ public class Order {
                 .sum();
     }
 
+    public int getMenuCount(Class<? extends Menu> menuType) {
+        return menus.entrySet().stream()
+                .filter(menuAndCount -> menuType.isInstance(menuAndCount.getKey()))
+                .mapToInt(menuAndCount -> menuAndCount.getValue().count)
+                .sum();
+    }
+
     static class MenuCount {
 
         private final int count;
