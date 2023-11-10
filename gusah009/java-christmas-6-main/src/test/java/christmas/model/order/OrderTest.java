@@ -1,9 +1,14 @@
 package christmas.model.order;
 
+import christmas.entity.menu.Menu;
 import christmas.exception.ChristmasException;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.util.Map;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
@@ -49,5 +54,14 @@ class OrderTest {
     @ValueSource(strings = {"타파스-1,제로콜라-1", "티본스테이크-1,바비큐립-1,초코케이크-2,제로콜라-1", "해산물파스타-2,레드와인-1,초코케이크-1", "초코케이크-1", "초코케이크-20"})
     void should_getSuccess_when_validInputMenus(String validInputMenus) {
         assertDoesNotThrow(() -> Order.from(validInputMenus));
+    }
+
+    @Test
+    void should_getTotalPriceCorrectly() {
+        Order order = new Order(Map.of(
+                Menu.from("해산물파스타"), Order.MenuCount.from("2"),
+                Menu.from("레드와인"), Order.MenuCount.from("1"),
+                Menu.from("초코케이크"), Order.MenuCount.from("1")));
+        assertThat(order.getTotalPrice()).isEqualTo(70000 + 60000 + 15000); // 145000
     }
 }

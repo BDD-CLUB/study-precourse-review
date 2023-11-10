@@ -3,9 +3,11 @@ package christmas.model.order;
 import christmas.entity.menu.Drink;
 import christmas.entity.menu.Menu;
 import christmas.exception.ChristmasException;
+import org.assertj.core.util.VisibleForTesting;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Order {
 
@@ -15,7 +17,8 @@ public class Order {
 
     private final Map<Menu, MenuCount> menus;
 
-    private Order(Map<Menu, MenuCount> menus) {
+    @VisibleForTesting
+    Order(Map<Menu, MenuCount> menus) {
         this.menus = menus;
     }
 
@@ -77,7 +80,20 @@ public class Order {
         }
     }
 
-    private static class MenuCount {
+    @Override
+    public String toString() {
+        return menus.entrySet().stream()
+                .map(menuAndCount -> menuAndCount.getKey() + " " + menuAndCount.getValue() + "개")
+                .collect(Collectors.joining("\n"));
+    }
+
+    public int getTotalPrice() {
+        return menus.entrySet().stream()
+                .mapToInt(menuAndCount -> menuAndCount.getKey().getPrice() * menuAndCount.getValue().count)
+                .sum();
+    }
+
+    static class MenuCount {
 
         private final int count;
 

@@ -12,4 +12,14 @@ public enum Main implements Menu {
     Main(int price) {
         this.price = price;
     }
+
+    @Override
+    public int getPrice() {
+        return this.price;
+    }
+
+    @Override
+    public String getMenuName() {
+        return this.name();
+    }
 }

@@ -11,4 +11,14 @@ public enum Drink implements Menu {
     Drink(int price) {
         this.price = price;
     }
+
+    @Override
+    public int getPrice() {
+        return this.price;
+    }
+
+    @Override
+    public String getMenuName() {
+        return this.name();
+    }
 }

@@ -21,4 +21,8 @@ public interface Menu {
         }
         throw new IllegalArgumentException("존재하지 않는 메뉴입니다.");
     }
+
+    int getPrice();
+
+    String getMenuName();
 }
