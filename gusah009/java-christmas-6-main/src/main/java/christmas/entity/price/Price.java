@@ -35,10 +35,11 @@ public class Price {
 
     @Override
     public String toString() {
-        if (price == 0) {
-            return "0원";
-        }
         return NUMBER_FORMAT.format(price) + "원";
+    }
+
+    public String toStringWithMinus() {
+        return NUMBER_FORMAT.format(-price) + "원";
     }
 
     @Override

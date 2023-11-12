@@ -27,7 +27,7 @@ public class OutputView {
 
     private void printPriceBeforeDiscount(EventPreviewInfo eventPreviewInfo) {
         System.out.println("<할인 전 총주문 금액>");
-        System.out.println(eventPreviewInfo.getTotalPriceBeforeDiscount() + "원");
+        System.out.println(eventPreviewInfo.getTotalPriceBeforeDiscount());
         System.out.println();
     }
 

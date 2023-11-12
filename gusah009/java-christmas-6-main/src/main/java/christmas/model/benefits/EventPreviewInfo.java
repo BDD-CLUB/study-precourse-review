@@ -44,8 +44,8 @@ public class EventPreviewInfo {
         return benefitsInfo.getBenefitInfo();
     }
 
-    public Price getTotalBenefitPrice() {
-        return this.benefitsInfo.getTotalBenefitPrice();
+    public String getTotalBenefitPrice() {
+        return this.benefitsInfo.getTotalBenefitPrice().toStringWithMinus();
     }
 
     public Price getExpectedPrice() {

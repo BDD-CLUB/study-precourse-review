@@ -24,12 +24,12 @@ import static java.util.stream.Collectors.toMap;
 
 public class BenefitInfo {
 
-    private final Map<Class<? extends BenefitPolicy>, Price> benefitInfos;
+    private final Map<BenefitPolicy, Price> benefitInfos;
     private final Price totalDiscountPrice;
     private final Price totalBenefitPrice;
     private final FreeGiftPolicy freeGiftPolicy;
 
-    private BenefitInfo(Map<Class<? extends BenefitPolicy>, Price> benefitInfos, Price totalDiscountPrice, Price totalBenefitPrice, FreeGiftPolicy freeGiftPolicy) {
+    private BenefitInfo(Map<BenefitPolicy, Price> benefitInfos, Price totalDiscountPrice, Price totalBenefitPrice, FreeGiftPolicy freeGiftPolicy) {
         this.benefitInfos = benefitInfos;
         this.totalDiscountPrice = totalDiscountPrice;
         this.totalBenefitPrice = totalBenefitPrice;
@@ -41,17 +41,17 @@ public class BenefitInfo {
     }
 
     public static BenefitInfo from(Order order, VisitDay visitDay, @Nullable FreeGiftPolicy freeGift) {
-        Map<Class<? extends BenefitPolicy>, Price> discountInfo = getDiscountInfo(order, visitDay);
+        Map<BenefitPolicy, Price> discountInfo = getDiscountInfo(order, visitDay);
         int totalDiscountPrice = getTotalBenefitPrice(discountInfo);
 
-        HashMap<Class<? extends BenefitPolicy>, Price> benefitInfoMap = new HashMap<>(discountInfo);
+        HashMap<BenefitPolicy, Price> benefitInfoMap = new HashMap<>(discountInfo);
         if (freeGift != null) {
-            benefitInfoMap.put(freeGift.getClass(), freeGift.getTotalPrice());
+            benefitInfoMap.put(freeGift, freeGift.getTotalPrice());
         }
         return new BenefitInfo(benefitInfoMap, Price.from(totalDiscountPrice), Price.from(getTotalBenefitPrice(benefitInfoMap)), freeGift);
     }
 
-    private static Map<Class<? extends BenefitPolicy>, Price> getDiscountInfo(Order order, VisitDay visitDay) {
+    private static Map<BenefitPolicy, Price> getDiscountInfo(Order order, VisitDay visitDay) {
         List<DiscountPolicy> discountInfo = List.of(
                 ChristmasDiscountPolicy.from(visitDay),
                 SpecialDiscountPolicy.from(visitDay),
@@ -59,13 +59,13 @@ public class BenefitInfo {
                 WeekendDiscountPolicy.from(visitDay, order.getMenuCount(Main.class))
         );
         return discountInfo.stream()
-                .map(discountPolicy -> MapEntry.entry(discountPolicy.getClass(), discountPolicy.getDiscountPriceIfDiscountable()))
+                .map(discountPolicy -> MapEntry.entry(discountPolicy, discountPolicy.getDiscountPriceIfDiscountable()))
                 .filter(entry -> entry.getValue().isPresent())
                 .collect(toMap(MapEntry::getKey, entry -> entry.getValue().get()));
 
     }
 
-    private static int getTotalBenefitPrice(Map<Class<? extends BenefitPolicy>, Price> discountInfo) {
+    private static int getTotalBenefitPrice(Map<BenefitPolicy, Price> discountInfo) {
         return discountInfo.values().stream()
                 .map(Price::get)
                 .mapToInt(Integer::intValue)
@@ -85,7 +85,7 @@ public class BenefitInfo {
             return "없음";
         }
         return benefitInfos.entrySet().stream()
-                .map(entry -> entry.getKey() + ": " + entry.getValue())
+                .map(entry -> entry.getKey() + ": " + entry.getValue().toStringWithMinus())
                 .collect(Collectors.joining("\n"));
     }
 
