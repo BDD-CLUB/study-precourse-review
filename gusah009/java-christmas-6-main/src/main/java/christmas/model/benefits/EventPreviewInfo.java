@@ -3,10 +3,9 @@ package christmas.model.benefits;
 import christmas.entity.discount.FreeGiftPolicy;
 import christmas.model.VisitDay;
 import christmas.model.order.Order;
+import org.jetbrains.annotations.Nullable;
 
 import java.text.NumberFormat;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 public class EventPreviewInfo {
@@ -15,9 +14,10 @@ public class EventPreviewInfo {
 
     private final int totalPriceBeforeDiscount;
     private final BenefitInfo benefitsInfo;
-    private final Optional<Badge> eventBadge;
+    @Nullable
+    private final Badge eventBadge;
 
-    private EventPreviewInfo(int totalPriceBeforeDiscount, BenefitInfo benefitsInfo, Optional<Badge> eventBadge) {
+    private EventPreviewInfo(int totalPriceBeforeDiscount, BenefitInfo benefitsInfo, Badge eventBadge) {
         this.totalPriceBeforeDiscount = totalPriceBeforeDiscount;
         this.benefitsInfo = benefitsInfo;
         this.eventBadge = eventBadge;
@@ -26,11 +26,11 @@ public class EventPreviewInfo {
     public static EventPreviewInfo from(Order order, VisitDay visitDay) {
         int totalPriceBeforeDiscount = order.getTotalPrice();
         if (totalPriceBeforeDiscount < POSSIBLE_EVENT_PRICE) {
-            return new EventPreviewInfo(totalPriceBeforeDiscount, BenefitInfo.empty(), Optional.empty());
+            return new EventPreviewInfo(totalPriceBeforeDiscount, BenefitInfo.empty(), null);
         }
         FreeGiftPolicy freeGift = FreeGiftPolicy.from(totalPriceBeforeDiscount);
         BenefitInfo benefitsInfo = BenefitInfo.from(order, visitDay, freeGift);
-        Optional<Badge> eventBadge = Badge.from(benefitsInfo.getTotalBenefitPrice());
+        Badge eventBadge = Badge.from(benefitsInfo.getTotalBenefitPrice()).orElse(null);
         return new EventPreviewInfo(totalPriceBeforeDiscount, benefitsInfo, eventBadge);
     }
 
@@ -55,6 +55,9 @@ public class EventPreviewInfo {
     }
 
     public String getEventBadge() {
-        return eventBadge.map(Badge::name).orElse("없음");
+        if (eventBadge == null) {
+            return "없음";
+        }
+        return eventBadge.name();
     }
 }
