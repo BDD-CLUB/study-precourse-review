@@ -1,25 +1,23 @@
-package christmas.model.benefits;
+package christmas.entity.discount;
 
 import christmas.entity.menu.Drink;
 import christmas.entity.menu.Menu;
 
-import java.util.Optional;
-
-public class FreeGift {
+public class FreeGiftPolicy implements BenefitPolicy {
 
     private static final int POSSIBLE_GET_GIFT_PRICE = 120_000;
 
     private final Menu freeGift;
 
-    private FreeGift(Menu freeGift) {
+    private FreeGiftPolicy(Menu freeGift) {
         this.freeGift = freeGift;
     }
 
-    public static Optional<FreeGift> from(int totalPriceBeforeDiscount) {
+    public static FreeGiftPolicy from(int totalPriceBeforeDiscount) {
         if (totalPriceBeforeDiscount < POSSIBLE_GET_GIFT_PRICE) {
-            return Optional.empty();
+            return null;
         }
-        return Optional.of(new FreeGift(Drink.샴페인));
+        return new FreeGiftPolicy(Drink.샴페인);
     }
 
     @Override

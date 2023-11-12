@@ -1,57 +1,52 @@
 package christmas.entity.discount;
 
 import christmas.model.VisitDay;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.time.LocalDate;
 import java.util.stream.Stream;
 
-import static christmas.entity.discount.DiscountPolicy.CHRISTMAS_DISCOUNT_POLICY;
-import static christmas.entity.discount.DiscountPolicy.SPECIAL_DISCOUNT_POLICY;
-import static christmas.entity.discount.DiscountPolicy.WEEKDAY_DISCOUNT_POLICY;
-import static christmas.entity.discount.DiscountPolicy.WEEKEND_DISCOUNT_POLICY;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.anyInt;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class DiscountPolicyTest {
 
     @ParameterizedTest
     @MethodSource
-    void should_discountable_when_inputVisitDay(DiscountPolicy discountPolicy, int visitDay, boolean expected) {
-        boolean isDiscountable = discountPolicy.isDiscountable(VisitDay.from(String.valueOf(visitDay)));
+    void should_discountable_when_inputVisitDay(DiscountPolicy discountPolicy, boolean expected) {
+        boolean isDiscountable = discountPolicy.isDiscountable();
         assertEquals(expected, isDiscountable);
     }
 
     static Stream<Arguments> should_discountable_when_inputVisitDay() {
         return Stream.of(
-                Arguments.arguments(CHRISTMAS_DISCOUNT_POLICY, 1, true),
-                Arguments.arguments(CHRISTMAS_DISCOUNT_POLICY, 25, true),
-                Arguments.arguments(SPECIAL_DISCOUNT_POLICY, 10, true),
-                Arguments.arguments(SPECIAL_DISCOUNT_POLICY, 25, true),
-                Arguments.arguments(SPECIAL_DISCOUNT_POLICY, 31, true),
-                Arguments.arguments(WEEKDAY_DISCOUNT_POLICY, 4, true),
-                Arguments.arguments(WEEKDAY_DISCOUNT_POLICY, 13, true),
-                Arguments.arguments(WEEKDAY_DISCOUNT_POLICY, 28, true),
-                Arguments.arguments(WEEKDAY_DISCOUNT_POLICY, 31, true),
-                Arguments.arguments(WEEKEND_DISCOUNT_POLICY, 1, true),
-                Arguments.arguments(WEEKEND_DISCOUNT_POLICY, 22, true),
-                Arguments.arguments(WEEKEND_DISCOUNT_POLICY, 30, true),
-                Arguments.arguments(CHRISTMAS_DISCOUNT_POLICY, 26, false),
-                Arguments.arguments(CHRISTMAS_DISCOUNT_POLICY, 31, false),
-                Arguments.arguments(SPECIAL_DISCOUNT_POLICY, 18, false),
-                Arguments.arguments(SPECIAL_DISCOUNT_POLICY, 20, false),
-                Arguments.arguments(SPECIAL_DISCOUNT_POLICY, 30, false),
-                Arguments.arguments(WEEKDAY_DISCOUNT_POLICY, 1, false),
-                Arguments.arguments(WEEKDAY_DISCOUNT_POLICY, 22, false),
-                Arguments.arguments(WEEKDAY_DISCOUNT_POLICY, 30, false),
-                Arguments.arguments(WEEKEND_DISCOUNT_POLICY, 4, false),
-                Arguments.arguments(WEEKEND_DISCOUNT_POLICY, 13, false),
-                Arguments.arguments(WEEKEND_DISCOUNT_POLICY, 28, false),
-                Arguments.arguments(WEEKEND_DISCOUNT_POLICY, 31, false)
+                Arguments.arguments(ChristmasDiscountPolicy.from(VisitDay.from("1")), true),
+                Arguments.arguments(ChristmasDiscountPolicy.from(VisitDay.from("25")), true),
+                Arguments.arguments(SpecialDiscountPolicy.from(VisitDay.from("10")), true),
+                Arguments.arguments(SpecialDiscountPolicy.from(VisitDay.from("25")), true),
+                Arguments.arguments(SpecialDiscountPolicy.from(VisitDay.from("31")), true),
+                Arguments.arguments(WeekdayDiscountPolicy.from(VisitDay.from("4"), anyInt()), true),
+                Arguments.arguments(WeekdayDiscountPolicy.from(VisitDay.from("13"), anyInt()), true),
+                Arguments.arguments(WeekdayDiscountPolicy.from(VisitDay.from("28"), anyInt()), true),
+                Arguments.arguments(WeekdayDiscountPolicy.from(VisitDay.from("31"), anyInt()), true),
+                Arguments.arguments(WeekendDiscountPolicy.from(VisitDay.from("1"), anyInt()), true),
+                Arguments.arguments(WeekendDiscountPolicy.from(VisitDay.from("22"), anyInt()), true),
+                Arguments.arguments(WeekendDiscountPolicy.from(VisitDay.from("30"), anyInt()), true),
+                Arguments.arguments(ChristmasDiscountPolicy.from(VisitDay.from("26")), false),
+                Arguments.arguments(ChristmasDiscountPolicy.from(VisitDay.from("31")), false),
+                Arguments.arguments(SpecialDiscountPolicy.from(VisitDay.from("18")), false),
+                Arguments.arguments(SpecialDiscountPolicy.from(VisitDay.from("20")), false),
+                Arguments.arguments(SpecialDiscountPolicy.from(VisitDay.from("30")), false),
+                Arguments.arguments(WeekdayDiscountPolicy.from(VisitDay.from("1"), anyInt()), false),
+                Arguments.arguments(WeekdayDiscountPolicy.from(VisitDay.from("22"), anyInt()), false),
+                Arguments.arguments(WeekdayDiscountPolicy.from(VisitDay.from("30"), anyInt()), false),
+                Arguments.arguments(WeekendDiscountPolicy.from(VisitDay.from("4"), anyInt()), false),
+                Arguments.arguments(WeekendDiscountPolicy.from(VisitDay.from("13"), anyInt()), false),
+                Arguments.arguments(WeekendDiscountPolicy.from(VisitDay.from("28"), anyInt()), false),
+                Arguments.arguments(WeekendDiscountPolicy.from(VisitDay.from("31"), anyInt()), false)
         );
     }
 }
