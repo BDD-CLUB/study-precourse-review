@@ -1,5 +1,7 @@
 package christmas.entity.menu;
 
+import christmas.entity.price.Price;
+
 public interface Menu {
 
     static Menu from(String menuName) {
@@ -22,7 +24,7 @@ public interface Menu {
         throw new IllegalArgumentException("존재하지 않는 메뉴입니다.");
     }
 
-    int getPrice();
+    Price getPrice();
 
     String getMenuName();
 }

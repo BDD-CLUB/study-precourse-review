@@ -1,5 +1,6 @@
 package christmas.entity.discount;
 
+import christmas.entity.price.Price;
 import christmas.model.VisitDay;
 import christmas.model.order.Order;
 import org.assertj.core.util.VisibleForTesting;
@@ -21,10 +22,10 @@ public abstract class DiscountPolicy implements BenefitPolicy {
         this.visitDay = visitDay;
     }
 
-    final public Optional<Integer> getDiscountPriceIfDiscountable() {
+    final public Optional<Price> getDiscountPriceIfDiscountable() {
         if (isDiscountable()) {
-            int discountPrice = this.getDiscountPrice();
-            if (discountPrice <= 0) {
+            Price discountPrice = this.getDiscountPrice();
+            if (discountPrice == Price.zero()) {
                 return Optional.empty();
             }
             return Optional.of(discountPrice);
@@ -32,7 +33,7 @@ public abstract class DiscountPolicy implements BenefitPolicy {
         return Optional.empty();
     }
 
-    abstract protected int getDiscountPrice();
+    abstract protected Price getDiscountPrice();
 
     abstract protected boolean isDisCountable(LocalDate visitDate);
 

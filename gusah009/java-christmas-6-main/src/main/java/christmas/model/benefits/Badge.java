@@ -1,5 +1,6 @@
 package christmas.model.benefits;
 
+import christmas.entity.price.Price;
 import org.assertj.core.util.VisibleForTesting;
 
 import java.util.Arrays;
@@ -18,9 +19,9 @@ public enum Badge {
         this.earnablePriceThreashold = earnablePriceThreashold;
     }
 
-    public static Optional<Badge> from(int totalBenefitPrice) {
+    public static Optional<Badge> from(Price totalBenefitPrice) {
         return Arrays.stream(Badge.values()).sorted(new BadgeComparator())
-                .filter(badge -> badge.earnablePriceThreashold <= totalBenefitPrice)
+                .filter(badge -> badge.earnablePriceThreashold <= totalBenefitPrice.get())
                 .findFirst();
     }
 

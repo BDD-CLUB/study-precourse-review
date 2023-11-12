@@ -2,6 +2,7 @@ package christmas.entity.discount;
 
 import christmas.entity.menu.Drink;
 import christmas.entity.menu.Menu;
+import christmas.entity.price.Price;
 
 public class FreeGiftPolicy implements BenefitPolicy {
 
@@ -13,8 +14,8 @@ public class FreeGiftPolicy implements BenefitPolicy {
         this.freeGift = freeGift;
     }
 
-    public static FreeGiftPolicy from(int totalPriceBeforeDiscount) {
-        if (totalPriceBeforeDiscount < POSSIBLE_GET_GIFT_PRICE) {
+    public static FreeGiftPolicy from(Price totalPriceBeforeDiscount) {
+        if (totalPriceBeforeDiscount.get() < POSSIBLE_GET_GIFT_PRICE) {
             return null;
         }
         return new FreeGiftPolicy(Drink.샴페인);
@@ -25,7 +26,7 @@ public class FreeGiftPolicy implements BenefitPolicy {
         return "증정 이벤트";
     }
 
-    public int getTotalPrice() {
+    public Price getTotalPrice() {
         return freeGift.getPrice();
     }
 

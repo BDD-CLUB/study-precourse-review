@@ -2,6 +2,7 @@ package christmas.model.order;
 
 import christmas.entity.menu.Drink;
 import christmas.entity.menu.Menu;
+import christmas.entity.price.Price;
 import christmas.exception.ChristmasException;
 import org.assertj.core.util.VisibleForTesting;
 
@@ -87,10 +88,11 @@ public class Order {
                 .collect(Collectors.joining("\n"));
     }
 
-    public int getTotalPrice() {
-        return menus.entrySet().stream()
-                .mapToInt(menuAndCount -> menuAndCount.getKey().getPrice() * menuAndCount.getValue().count)
+    public Price getTotalPrice() {
+        int totalPrice = menus.entrySet().stream()
+                .mapToInt(menuAndCount -> menuAndCount.getKey().getPrice().get() * menuAndCount.getValue().count)
                 .sum();
+        return Price.from(totalPrice);
     }
 
     public int getMenuCount(Class<? extends Menu> menuType) {

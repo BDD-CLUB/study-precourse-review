@@ -1,6 +1,7 @@
 package christmas.entity.discount;
 
 import christmas.entity.menu.Main;
+import christmas.entity.price.Price;
 import christmas.model.VisitDay;
 
 import java.time.DayOfWeek;
@@ -34,8 +35,8 @@ public class WeekendDiscountPolicy extends DiscountPolicy {
     }
 
     @Override
-    protected int getDiscountPrice() {
-        return mainMenuCount * 2023;
+    protected Price getDiscountPrice() {
+        return Price.from(mainMenuCount * 2023);
     }
 
     @Override

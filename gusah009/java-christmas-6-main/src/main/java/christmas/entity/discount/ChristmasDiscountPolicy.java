@@ -1,5 +1,6 @@
 package christmas.entity.discount;
 
+import christmas.entity.price.Price;
 import christmas.model.VisitDay;
 import christmas.model.order.Order;
 
@@ -24,8 +25,8 @@ public class ChristmasDiscountPolicy extends DiscountPolicy {
     }
 
     @Override
-    protected int getDiscountPrice() {
-        return 1000 + ((visitDay.getDay() - 1) * 100);
+    protected Price getDiscountPrice() {
+        return Price.from(1000 + ((visitDay.getDay() - 1) * 100));
     }
 
     @Override

@@ -2,6 +2,7 @@ package christmas.model.order;
 
 import christmas.entity.menu.Main;
 import christmas.entity.menu.Menu;
+import christmas.entity.price.Price;
 import christmas.exception.ChristmasException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -63,7 +64,7 @@ class OrderTest {
                 Menu.from("해산물파스타"), Order.MenuCount.from("2"),
                 Menu.from("레드와인"), Order.MenuCount.from("1"),
                 Menu.from("초코케이크"), Order.MenuCount.from("1")));
-        assertThat(order.getTotalPrice()).isEqualTo(70000 + 60000 + 15000); // 145000
+        assertThat(order.getTotalPrice()).isEqualTo(Price.from(70000 + 60000 + 15000)); // 145000
     }
 
     @Test

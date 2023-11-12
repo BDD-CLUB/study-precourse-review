@@ -45,7 +45,7 @@ public class OutputView {
 
     private void printTotalBenefitPrice(EventPreviewInfo eventPreviewInfo) {
         System.out.println("<총혜택 금액>");
-        System.out.println(eventPreviewInfo.getTotalBenefitPriceToString());
+        System.out.println(eventPreviewInfo.getTotalBenefitPrice());
         System.out.println();
     }
 

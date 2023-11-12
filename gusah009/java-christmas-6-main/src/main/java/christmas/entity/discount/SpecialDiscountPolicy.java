@@ -1,5 +1,6 @@
 package christmas.entity.discount;
 
+import christmas.entity.price.Price;
 import christmas.model.VisitDay;
 
 import java.time.LocalDate;
@@ -32,8 +33,8 @@ public class SpecialDiscountPolicy extends DiscountPolicy {
     }
 
     @Override
-    protected int getDiscountPrice() {
-        return 1000;
+    protected Price getDiscountPrice() {
+        return Price.from(1000);
     }
 
     @Override
