@@ -5,7 +5,7 @@ import static christmas.utils.ErrorMessage.OUT_OF_RANGE_DATE_ERROR;
 
 import camp.nextstep.edu.missionutils.Console;
 import christmas.domain.DecemberDate;
-import christmas.model.Menu;
+import christmas.domain.Menu;
 import christmas.utils.ChristmasException;
 import christmas.utils.ErrorMessage;
 import java.util.HashMap;

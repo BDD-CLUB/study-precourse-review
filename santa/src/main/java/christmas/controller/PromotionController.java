@@ -1,9 +1,10 @@
 package christmas.controller;
 
+import christmas.domain.ChristmasPromotion;
 import christmas.domain.Customer;
 import christmas.domain.DecemberDate;
-import christmas.model.Menu;
-import christmas.domain.discounts.DecemberDiscount;
+import christmas.domain.Menu;
+import christmas.domain.OrderInfo;
 import christmas.view.InputView;
 import christmas.view.OutputView;
 import java.util.HashMap;
@@ -18,32 +19,19 @@ public class PromotionController {
     }
 
     public void run() {
-        Customer customer = customerInput();
-        outputView.printChristmasPromotion(customer);
-
-        DecemberDiscount decemberDiscount = new DecemberDiscount(customer);
-        printResult(decemberDiscount, customer.calculateTotalPrice());
-
-        int totalDiscount = decemberDiscount.getTotalDiscount();
-        assignBadge(customer, totalDiscount);
-
+        OrderInfo orderInfo = inputOrderInfo();
+        Customer customer = new Customer(orderInfo);
+        ChristmasPromotion christmasPromotion = new ChristmasPromotion(customer);
+        outputView.printChristmasPromotion(christmasPromotion);
     }
 
-    private void assignBadge(Customer customer, int totalDiscount) {
-        customer.assignBadge(totalDiscount);
-        outputView.printBadge(customer.getBadgeName());
-    }
-
-    private void printResult(DecemberDiscount decemberDiscount, int totalPrice) {
-        boolean WillPresentation = decemberDiscount.willPresentEvent();
-        outputView.printPresentationMenu(WillPresentation);
-        outputView.printDiscountDetails(decemberDiscount, totalPrice);
-    }
-
-    private Customer customerInput() {
+    private OrderInfo inputOrderInfo() {
         outputView.printHelloMessage();
         DecemberDate visitDate = inputView.inputDate();
         HashMap<Menu, Integer> menu = inputView.inputMenu();
-        return new Customer(visitDate, menu);
+
+        return new OrderInfo(visitDate, menu);
     }
+
+
 }
